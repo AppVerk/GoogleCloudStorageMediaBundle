@@ -7,11 +7,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-
-        $rootNode = $treeBuilder->root('google_cloud_storage_media');
+        $treeBuilder = new TreeBuilder('google_cloud_storage_media');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

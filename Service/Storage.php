@@ -4,9 +4,6 @@ namespace AppVerk\GoogleCloudStorageMediaBundle\Service;
 
 use Google\Cloud\Storage\Bucket;
 use Google\Cloud\Storage\StorageClient;
-use League\Flysystem\PathPrefixer;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Throwable;
 
 class Storage
 {
