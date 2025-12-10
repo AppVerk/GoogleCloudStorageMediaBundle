@@ -114,7 +114,7 @@ class MediaUploader
 
         $maxSize = $this->mediaValidation->getMaxSize($groupName);
         if ($maxSize) {
-            if (!($fileSize = $file->getClientSize())) {
+            if (!($fileSize = $file->getSize())) {
                 throw new NotFoundHttpException();
             }
 
