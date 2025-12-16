@@ -203,8 +203,10 @@ class MediaUploader
 
     public function deleteFile(string $fileName): void
     {
-        $object = $this->storage->bucket()->object($fileName);
-        $object->delete();
+        if($this->storage->bucket()->object($fileName)->exists())
+        {
+            $this->storage->bucket()->object($fileName)->delete();
+        }
     }
 
     public function getFileName(string $fileUrl): string
