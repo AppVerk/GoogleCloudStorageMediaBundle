@@ -1,6 +1,6 @@
 # GoogleCloudStorageMediaBundle
 
-Symfony Media Bundle. The bundle allow in easy way upload files. The bundle required to working [dropzone.js](http://www.dropzonejs.com/) script.
+Symfony Media Bundle. The bundle allows for easy file uploads. The bundle requires the [dropzone.js](http://www.dropzonejs.com/) script to work.
 
 ## Configure
 
@@ -10,85 +10,81 @@ Require the bundle with composer:
 
 Enable the bundle in the kernel:
 
-    <?php
-    // app/AppKernel.php
+    // config/bundles.php
 
-    public function registerBundles()
-    {
-        $bundles = array(
-            // ...
-            new AppVerk\GoogleCloudStorageMediaBundle\GoogleCloudStorageMediaBundle(),
-            // ...
-        );
-    }
+    return [
+        // ...
+        AppVerk\GoogleCloudStorageMediaBundle\GoogleCloudStorageMediaBundle::class => ['all' => true],
+    ];
 
 Create your Media class:
     
     <?php
     
-    namespace AppBundle\Entity;
+    namespace App\Entity;
     
     use AppVerk\GoogleCloudStorageMediaBundle\Entity\Media as BaseMedia;
     use Doctrine\ORM\Mapping as ORM;
     
-    /**
-     * @ORM\Entity()
-     */
+    #[ORM\Entity]
     class Media extends BaseMedia
     {
     
     }
     
-Add to config.yml:
+Add to config/packages/twig.yaml:
 
     twig:
-        form:
-            resources:
-                - 'GoogleCloudStorageMediaBundle:form:fields.html.twig'
+        form_themes:
+            - '@GoogleCloudStorageMedia/form/fields.html.twig'
                 
+Add to config/packages/google_cloud_storage_media.yaml:
+
     google_cloud_storage_media:
         namer: "AppVerk\\GoogleCloudStorageMediaBundle\\Namer\\DefaultNamer"
         filesystem: "default.storage"
         filesystem_url_retriever: 'AppVerk\GoogleCloudStorageMediaBundle\Flysystem\Retriever\LocalObjectUrlRetriever'
         entities:
-            media_class: AppBundle\Entity\Media
+            media_class: App\Entity\Media
         gcs:
             project_id: 123
             bucket_id: my_bucket
             key_file_path: "default"
         allowed_mime_types: ["image/jpeg", "image/jpg", "image/png", "image/gif", "application/pdf"]
         
-Add to routing.yml:
+Add to config/routes.yaml:
 
     media:
         resource: '@GoogleCloudStorageMediaBundle/Controller/'
-        type: annotation
+        type: attribute
                 
 Add these libs into your admin panel:
 
     <!--css -->
-    <link rel="stylesheet" href="{{ asset('bundles/media/css/dropzone.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/googlecloudstoragemedia/css/dropzone.min.css') }}" />
     
     <!-- js -->
-    <script src="{{ asset('bundles/media/js/dropzone.min.js') }}"></script>
+    <script src="{{ asset('bundles/googlecloudstoragemedia/js/dropzone.min.js') }}"></script>
 
 Update your database schema:
 
-    $ php app/console doctrine:schema:update --force
+    $ php bin/console doctrine:schema:update --force
     
 ## Media Form Type
 
     <?php
     
+    namespace App\Form\Type;
+
     use Symfony\Component\Form\AbstractType;
     use AppVerk\GoogleCloudStorageMediaBundle\Form\Type\MediaType;
     use Symfony\Component\Form\FormBuilderInterface;
     
-    class Post extends AbstractType
+    class PostType extends AbstractType
     {
-        public function buildForm(FormBuilderInterface $builder, array $options)
+        public function buildForm(FormBuilderInterface $builder, array $options): void
         {
-            $formMapper
+            $builder
                 ->add('image', MediaType::class)
             ;
         }
@@ -104,11 +100,11 @@ Render a media:
 
 Bundle allow to validation every single used MediaType in different way. For example you want to allow only PDF files: 
 
-You need to add group into config.yml:
+You need to add group into config/packages/google_cloud_storage_media.yaml:
 
-    media:
+    google_cloud_storage_media:
         entities:
-            media_class: AppBundle\Entity\Media
+            media_class: App\Entity\Media
         allowed_mime_types: ["image/png", "image/gif"]
         max_file_size: 15000000
         groups:
@@ -118,7 +114,7 @@ You need to add group into config.yml:
 
 Set group in MediaType:
     
-    $formMapper->add('image', MediaType::class, [
+    $builder->add('image', MediaType::class, [
         'group' => 'lorem'
     ]);
 

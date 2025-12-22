@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Model;
 
-class UploadFile {
-
+class UploadFile
+{
     private string $name;
 
     private string $fileName;
@@ -19,7 +20,7 @@ class UploadFile {
         string $fileName,
         string $url,
         string $mimetype,
-        int $size
+        int $size,
     ) {
         $this->name = $name;
         $this->fileName = $fileName;
@@ -52,5 +53,4 @@ class UploadFile {
     {
         return $this->size;
     }
-
 }

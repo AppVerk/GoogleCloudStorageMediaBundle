@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Service;
 
@@ -7,33 +8,21 @@ use Google\Cloud\Storage\StorageClient;
 
 class Storage
 {
-    /** @var string */
-    private $bucketId;
-
-    /** @var StorageClient */
-    private $client;
+    private readonly StorageClient $client;
 
     /**
      * Storage constructor.
-     *
-     * @param string $projectId
-     * @param string $bucketId
-     * @param string $keyFilePath
      */
-    public function __construct(string $projectId, string $bucketId, string $keyFilePath)
+    public function __construct(string $projectId, private readonly string $bucketId, string $keyFilePath)
     {
-        $this->bucketId = $bucketId;
         $this->client = new StorageClient(
             [
                 'projectId'   => $projectId,
                 'keyFilePath' => $keyFilePath,
-            ]
+            ],
         );
     }
 
-    /**
-     * @return Bucket
-     */
     public function bucket(): Bucket
     {
         return $this->client->bucket($this->bucketId);

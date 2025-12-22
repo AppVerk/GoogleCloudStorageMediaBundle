@@ -1,16 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Namer\Strategy;
 
 class CurrentDateStrategy implements NamingStrategyInterface
 {
-    private string $format;
-
-    public function __construct(string $format = 'Y/m/d/')
-    {
-        $this->format = $format;
+    public function __construct(
+        private readonly string $format = 'Y/m/d/'
+    ) {
     }
 
     public function generate(string $filename, string $extension, string $prefix = '', string $suffix = ''): string

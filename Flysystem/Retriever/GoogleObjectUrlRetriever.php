@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Flysystem\Retriever;
 
@@ -21,7 +21,7 @@ class GoogleObjectUrlRetriever implements UrlRetrieverInterface
             [
                 'projectId'   => $projectId,
                 'keyFilePath' => $keyFilePath,
-            ]
+            ],
         );
     }
 

@@ -1,23 +1,25 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Service\v2;
 
 use AppVerk\GoogleCloudStorageMediaBundle\Event\FileWasAdded;
 use AppVerk\GoogleCloudStorageMediaBundle\Event\FileWasRemoved;
-use AppVerk\GoogleCloudStorageMediaBundle\Model\UploadFile;
 use AppVerk\GoogleCloudStorageMediaBundle\Exception\FilesystemException as AppFileSystemException;
 use AppVerk\GoogleCloudStorageMediaBundle\Exception\InvalidMimetypeException;
 use AppVerk\GoogleCloudStorageMediaBundle\Exception\InvalidSizeException;
 use AppVerk\GoogleCloudStorageMediaBundle\Flysystem\Retriever\UrlRetrieverInterface;
+use AppVerk\GoogleCloudStorageMediaBundle\Model\UploadFile;
 use AppVerk\GoogleCloudStorageMediaBundle\Namer\NamerInterface;
 use AppVerk\GoogleCloudStorageMediaBundle\Service\MediaValidation;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\FilesystemOperator;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+
+use function in_array;
 
 class StorageService
 {
@@ -39,9 +41,8 @@ class StorageService
         FilesystemOperator $filesystem,
         TranslatorInterface $translator,
         UrlRetrieverInterface $urlRetriever,
-        EventDispatcherInterface $eventDispatcher
-    )
-    {
+        EventDispatcherInterface $eventDispatcher,
+    ) {
         $this->mediaValidation = $mediaValidation;
         $this->namer = $namer;
         $this->filesystem = $filesystem;
@@ -57,7 +58,7 @@ class StorageService
 
         $url = $filename = $this->namer->generate(
             $originalFilename ?: $file->getFilename(),
-            $file->getExtension() ?: $file->guessExtension()
+            $file->getExtension() ?: $file->guessExtension(),
         );
 
         $splitName = explode('/', $filename);
@@ -76,7 +77,7 @@ class StorageService
             $filename,
             $url,
             $file->getMimeType(),
-            $file->getSize()
+            $file->getSize(),
         );
         $this->eventDispatcher->dispatch(new FileWasAdded($model));
 
@@ -117,17 +118,11 @@ class StorageService
         return false;
     }
 
-    /**
-     * @param UploadedFile $file
-     * @param string|null  $groupName
-     */
     protected function validate(UploadedFile $file, ?string $groupName = null): void
     {
         $allowedMimeTypes = $this->mediaValidation->getAllowedMimeTypes($groupName);
         if (!empty($allowedMimeTypes) && !in_array($file->getMimeType(), $allowedMimeTypes)) {
-            throw new InvalidMimetypeException(
-                $this->translator->trans('media.validation.image_type', ['%type%' => $file->getMimeType()])
-            );
+            throw new InvalidMimetypeException($this->translator->trans('media.validation.image_type', ['%type%' => $file->getMimeType()]));
         }
 
         $maxSize = $this->mediaValidation->getMaxSize($groupName);
@@ -137,17 +132,11 @@ class StorageService
             }
 
             if ($fileSize > $maxSize) {
-                throw new InvalidSizeException(
-                    $this->translator->trans('media.validation.image_size', ['%max_size%' => $maxSize])
-                );
+                throw new InvalidSizeException($this->translator->trans('media.validation.image_size', ['%max_size%' => $maxSize]));
             }
         }
     }
 
-    /**
-     * @param UploadedFile $file
-     * @param string|null  $groupName
-     */
     protected function validateSize(UploadedFile $file, ?string $groupName = null): void
     {
         $sizes = $this->mediaValidation->getGroupSizes($groupName);
@@ -155,7 +144,7 @@ class StorageService
             return;
         }
 
-        list($imageWidth, $imageHeight) = getimagesize($file->getPathname());
+        [$imageWidth, $imageHeight] = getimagesize($file->getPathname());
 
         $minWidth = $sizes['min_width'];
         $maxWidth = $sizes['max_width'];
@@ -166,23 +155,12 @@ class StorageService
         $maxProportion = $sizes['max_width'] / $sizes['max_height'];
         $imageProportion = $imageWidth / $imageHeight;
 
-        if (($imageWidth < $minWidth || $imageWidth > $maxWidth || $imageHeight < $minHeight || $imageHeight > $maxHeight)) {
-
-            if($minProportion === $maxProportion && $minProportion === $imageProportion){
+        if ($imageWidth < $minWidth || $imageWidth > $maxWidth || $imageHeight < $minHeight || $imageHeight > $maxHeight) {
+            if ($minProportion === $maxProportion && $minProportion === $imageProportion) {
                 return;
             }
 
-            throw new InvalidSizeException(
-                $this->translator->trans(
-                    'media.validation.image_dimension',
-                    [
-                        '%max_width%' => $maxWidth,
-                        '%min_width%' => $minWidth,
-                        '%max_height%' => $maxHeight,
-                        '%min_height%' => $minHeight,
-                    ]
-                )
-            );
+            throw new InvalidSizeException($this->translator->trans('media.validation.image_dimension', ['%max_width%' => $maxWidth, '%min_width%' => $minWidth, '%max_height%' => $maxHeight, '%min_height%' => $minHeight]));
         }
     }
 }

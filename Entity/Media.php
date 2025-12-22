@@ -1,65 +1,40 @@
 <?php
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Entity;
 
 use AppVerk\Components\Doctrine\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\MappedSuperclass()
- */
+#[ORM\MappedSuperclass]
 abstract class Media implements EntityInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=100)
-     */
-    protected $name;
+    #[ORM\Column(type: 'string', length: 100)]
+    protected string $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $url;
+    #[ORM\Column(type: 'text', nullable: true)]
+    protected ?string $url = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, unique=true)
-     */
-    protected $fileName;
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    protected string $fileName;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=100)
-     */
-    protected $mimeType;
+    #[ORM\Column(type: 'string', length: 100)]
+    protected string $mimeType;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     */
-    protected $size;
+    #[ORM\Column(type: 'integer')]
+    protected int $size;
 
     public function __toString()
     {
         return $this->getName();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

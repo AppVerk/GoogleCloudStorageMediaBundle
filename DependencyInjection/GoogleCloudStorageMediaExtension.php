@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\DependencyInjection;
 
@@ -9,10 +10,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class GoogleCloudStorageMediaExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -31,7 +29,7 @@ class GoogleCloudStorageMediaExtension extends Extension
         $container->setParameter('google_cloud_storage_media.allowed_mime_types', $config['allowed_mime_types']);
         $container->setParameter('google_cloud_storage_media.groups', $config['groups']);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
     }
 }

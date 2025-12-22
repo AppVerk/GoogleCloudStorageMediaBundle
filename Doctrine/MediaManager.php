@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Doctrine;
 
@@ -8,13 +9,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaManager extends AbstractManager implements MediaManagerInterface
 {
-    /**
-     * @param UploadedFile $uploadedFile
-     * @param string       $fileName
-     * @param int          $size
-     *
-     * @return Media
-     */
     public function createMedia(UploadedFile $uploadedFile, string $fileName, int $size): Media
     {
         /** @var Media $media */

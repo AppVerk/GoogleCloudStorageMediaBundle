@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\DependencyInjection\Compiler;
 
@@ -13,9 +13,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AddStorageServiceMappingPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritDoc}
-     */
     public function process(ContainerBuilder $container): void
     {
         if (!$container->hasParameter('google_cloud_storage_media.filesystem')) {

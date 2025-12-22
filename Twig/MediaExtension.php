@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Twig;
 
@@ -9,30 +10,25 @@ use Twig\TwigFilter;
 
 class MediaExtension extends AbstractExtension
 {
-    /**
-     * @var MediaProvider
-     */
-    private $mediaProvider;
-
-    public function __construct(MediaProvider $mediaProvider)
-    {
-        $this->mediaProvider = $mediaProvider;
+    public function __construct(
+        private readonly MediaProvider $mediaProvider
+    ) {
     }
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('media', [$this, 'mediaFilter']),
             new TwigFilter('json_media', [$this, 'jsonMediaFilter'], [
-                'is_safe' => ['html']
+                'is_safe' => ['html'],
             ]),
             new TwigFilter('array_media', [$this, 'arrayMediaFilter'], [
-                'is_safe' => ['html']
-            ])
+                'is_safe' => ['html'],
+            ]),
         ];
     }
 
-    public function jsonMediaFilter($media)
+    public function jsonMediaFilter($media): string
     {
         $data = [];
 
@@ -41,14 +37,14 @@ class MediaExtension extends AbstractExtension
                 'name'      => $media->getName(),
                 'url'       => $this->mediaProvider->getUrl($media),
                 'mime_type' => $media->getMimeType(),
-                'size'      => $media->getSize()
+                'size'      => $media->getSize(),
             ];
         }
 
-        return json_encode($data);
+        return (string) json_encode($data);
     }
 
-    public function arrayMediaFilter($media)
+    public function arrayMediaFilter($media): array
     {
         $data = [];
 
@@ -57,14 +53,14 @@ class MediaExtension extends AbstractExtension
                 'name'      => $media->getName(),
                 'url'       => $this->mediaProvider->getUrl($media),
                 'mime_type' => $media->getMimeType(),
-                'size'      => $media->getSize()
+                'size'      => $media->getSize(),
             ];
         }
 
         return $data;
     }
 
-    public function mediaFilter(Media $media)
+    public function mediaFilter(Media $media): string
     {
         return $this->mediaProvider->getUrl($media);
     }

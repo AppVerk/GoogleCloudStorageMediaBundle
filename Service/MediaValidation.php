@@ -1,42 +1,22 @@
 <?php
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Service;
+
+use function array_key_exists;
 
 class MediaValidation
 {
     /**
-     * @var int|null
-     */
-    private $maxSize;
-    /**
-     * @var array
-     */
-    private $allowedMimeTypes;
-    /**
-     * @var array
-     */
-    private $groups;
-
-
-    /**
      * MediaValidation constructor.
-     *
-     * @param int|null $maxSize
-     * @param array    $allowedMimeTypes
-     * @param array    $groups
      */
-    public function __construct(?int $maxSize = null, array $allowedMimeTypes = [], array $groups = [])
-    {
-        $this->maxSize = $maxSize;
-        $this->allowedMimeTypes = $allowedMimeTypes;
-        $this->groups = $groups;
+    public function __construct(
+        private readonly ?int $maxSize = null,
+        private readonly array $allowedMimeTypes = [],
+        private readonly array $groups = []
+    ) {
     }
 
-    /**
-     * @param string $groupName
-     *
-     * @return array|null
-     */
     private function getGroup(string $groupName): ?array
     {
         if (array_key_exists($groupName, $this->groups)) {
@@ -46,11 +26,6 @@ class MediaValidation
         return null;
     }
 
-    /**
-     * @param null|string $groupName
-     *
-     * @return array
-     */
     public function getAllowedMimeTypes(?string $groupName = null): array
     {
         if (null !== $groupName) {
@@ -62,11 +37,6 @@ class MediaValidation
         return $this->allowedMimeTypes;
     }
 
-    /**
-     * @param null|string $groupName
-     *
-     * @return int|null
-     */
     public function getMaxSize(?string $groupName = null): ?int
     {
         if (null !== $groupName) {

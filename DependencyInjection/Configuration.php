@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\DependencyInjection;
 
@@ -6,12 +7,11 @@ use AppVerk\GoogleCloudStorageMediaBundle\Namer\NamerInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class Configuration implements ConfigurationInterface
+final class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('google_cloud_storage_media');
-
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode

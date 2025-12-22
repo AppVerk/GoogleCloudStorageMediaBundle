@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Namer;
 
@@ -8,11 +8,9 @@ use AppVerk\GoogleCloudStorageMediaBundle\Namer\Strategy\NamingStrategyInterface
 
 abstract class AbstractNamer implements NamerInterface
 {
-    protected NamingStrategyInterface $strategy;
-
-    public function __construct(NamingStrategyInterface $strategy)
-    {
-        $this->strategy = $strategy;
+    public function __construct(
+        protected readonly NamingStrategyInterface $strategy
+    ) {
     }
 
     public function generate(string $filename, string $extension): string

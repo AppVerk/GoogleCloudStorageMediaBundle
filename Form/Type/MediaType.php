@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Form\Type;
 
@@ -13,41 +14,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MediaType extends AbstractType
 {
-    /**
-     * @var MediaTransformer
-     */
-    private $mediaTransformer;
-
-    /**
-     * @var MediaValidation
-     */
-    private $mediaValidation;
-
-
-    /**
-     * MediaType constructor.
-     *
-     * @param MediaTransformer $mediaTransformer
-     * @param MediaValidation  $mediaValidation
-     */
-    public function __construct(MediaTransformer $mediaTransformer, MediaValidation $mediaValidation)
-    {
-        $this->mediaTransformer = $mediaTransformer;
-        $this->mediaValidation = $mediaValidation;
+    public function __construct(
+        private readonly MediaTransformer $mediaTransformer,
+        private readonly MediaValidation $mediaValidation
+    ) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer($this->mediaTransformer);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         parent::buildView($view, $form, $options);
 
@@ -56,18 +34,12 @@ class MediaType extends AbstractType
         $view->vars['max_size'] = $this->mediaValidation->getMaxSize($options['group']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string
     {
         return HiddenType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
