@@ -56,17 +56,16 @@ class StorageService
         $this->validate($file, $groupName);
         $this->validateSize($file, $groupName);
 
-        $url = $filename = $this->namer->generate(
+        $filename = $this->namer->generate(
             $originalFilename ?: $file->getFilename(),
             $file->getExtension() ?: $file->guessExtension(),
         );
 
-        $splitName = explode('/', $filename);
-        $friendlyName = end($splitName);
         $parts = explode('/', $filename);
+        $friendlyName = end($parts);
 
         try {
-            $this->filesystem->write(end($parts), $file->getContent());
+            $this->filesystem->write($friendlyName, $file->getContent());
             $url = $this->urlRetriever->getUrl($filename);
         } catch (FilesystemException $e) {
             throw new AppFileSystemException($e->getMessage());
