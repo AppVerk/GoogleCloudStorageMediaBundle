@@ -7,8 +7,11 @@ use AppVerk\GoogleCloudStorageMediaBundle\DependencyInjection\Compiler\AddStorag
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+use Override;
+
 class GoogleCloudStorageMediaBundle extends Bundle
 {
+    #[Override]
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);

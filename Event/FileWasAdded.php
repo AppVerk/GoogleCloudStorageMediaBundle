@@ -6,13 +6,11 @@ namespace AppVerk\GoogleCloudStorageMediaBundle\Event;
 
 use AppVerk\GoogleCloudStorageMediaBundle\Model\UploadFile;
 
-class FileWasAdded
+readonly class FileWasAdded
 {
-    private UploadFile $file;
-
-    public function __construct(UploadFile $file)
-    {
-        $this->file = $file;
+    public function __construct(
+        private UploadFile $file
+    ) {
     }
 
     public function getFile(): UploadFile

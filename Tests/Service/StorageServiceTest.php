@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Override;
+
 class StorageServiceTest extends TestCase
 {
     private MediaValidation $mediaValidation;
@@ -27,6 +29,7 @@ class StorageServiceTest extends TestCase
     private EventDispatcherInterface $eventDispatcher;
     private StorageService $storageService;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->mediaValidation = $this->createMock(MediaValidation::class);

@@ -7,8 +7,11 @@ use AppVerk\GoogleCloudStorageMediaBundle\Namer\NamerInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+use Override;
+
 final class Configuration implements ConfigurationInterface
 {
+    #[Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('google_cloud_storage_media');

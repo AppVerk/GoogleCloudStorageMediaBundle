@@ -7,9 +7,6 @@ use function array_key_exists;
 
 class MediaValidation
 {
-    /**
-     * MediaValidation constructor.
-     */
     public function __construct(
         private readonly ?int $maxSize = null,
         private readonly array $allowedMimeTypes = [],

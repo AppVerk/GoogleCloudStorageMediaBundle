@@ -3,30 +3,15 @@ declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Model;
 
-class UploadFile
+readonly class UploadFile
 {
-    private string $name;
-
-    private string $fileName;
-
-    private string $url;
-
-    private string $mimetype;
-
-    private int $size;
-
     public function __construct(
-        string $name,
-        string $fileName,
-        string $url,
-        string $mimetype,
-        int $size,
+        private string $name,
+        private string $fileName,
+        private string $url,
+        private string $mimetype,
+        private int $size,
     ) {
-        $this->name = $name;
-        $this->fileName = $fileName;
-        $this->url = $url;
-        $this->mimetype = $mimetype;
-        $this->size = $size;
     }
 
     public function getName(): string

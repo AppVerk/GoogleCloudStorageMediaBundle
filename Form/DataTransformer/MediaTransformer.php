@@ -10,24 +10,17 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 use function sprintf;
 
+use Override;
+
 class MediaTransformer implements DataTransformerInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var string
-     */
-    private $className;
-
-    public function __construct(EntityManagerInterface $entityManager, string $className)
-    {
-        $this->entityManager = $entityManager;
-        $this->className = $className;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly string $className
+    ) {
     }
 
+    #[Override]
     public function transform($value): mixed
     {
         if (!$value instanceof EntityInterface) {
@@ -37,6 +30,7 @@ class MediaTransformer implements DataTransformerInterface
         return $value;
     }
 
+    #[Override]
     public function reverseTransform($value): mixed
     {
         if (!$value) {

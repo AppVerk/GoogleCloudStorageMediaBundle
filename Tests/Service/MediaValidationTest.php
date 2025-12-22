@@ -7,10 +7,13 @@ namespace AppVerk\GoogleCloudStorageMediaBundle\Tests\Service;
 use AppVerk\GoogleCloudStorageMediaBundle\Service\MediaValidation;
 use PHPUnit\Framework\TestCase;
 
+use Override;
+
 class MediaValidationTest extends TestCase
 {
     private MediaValidation $mediaValidation;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->mediaValidation = new MediaValidation(

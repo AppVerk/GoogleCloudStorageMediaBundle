@@ -7,8 +7,11 @@ use AppVerk\Components\Doctrine\AbstractManager;
 use AppVerk\GoogleCloudStorageMediaBundle\Entity\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+use Override;
+
 class MediaManager extends AbstractManager implements MediaManagerInterface
 {
+    #[Override]
     public function createMedia(UploadedFile $uploadedFile, string $fileName, int $size): Media
     {
         /** @var Media $media */

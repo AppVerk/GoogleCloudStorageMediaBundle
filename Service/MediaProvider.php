@@ -9,14 +9,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class MediaProvider
 {
-    /**
-     * @var Request
-     */
-    private $request;
+    private ?Request $request;
 
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->request = $requestStack->getCurrentRequest();
+    public function __construct(
+        private readonly RequestStack $requestStack
+    ) {
+        $this->request = $this->requestStack->getCurrentRequest();
     }
 
     public function getUrl(Media $media): string

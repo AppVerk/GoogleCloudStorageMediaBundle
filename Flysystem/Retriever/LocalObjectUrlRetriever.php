@@ -6,15 +6,16 @@ namespace AppVerk\GoogleCloudStorageMediaBundle\Flysystem\Retriever;
 
 use const DIRECTORY_SEPARATOR;
 
+use Override;
+
 class LocalObjectUrlRetriever implements UrlRetrieverInterface
 {
-    private string $publicPath;
-
-    public function __construct(string $publicPath = '/')
-    {
-        $this->publicPath = $publicPath;
+    public function __construct(
+        private readonly string $publicPath = '/'
+    ) {
     }
 
+    #[Override]
     public function getUrl(string $filename): string
     {
         return $this->publicPath . DIRECTORY_SEPARATOR . $filename;

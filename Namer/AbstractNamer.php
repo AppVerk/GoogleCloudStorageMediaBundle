@@ -6,6 +6,8 @@ namespace AppVerk\GoogleCloudStorageMediaBundle\Namer;
 
 use AppVerk\GoogleCloudStorageMediaBundle\Namer\Strategy\NamingStrategyInterface;
 
+use Override;
+
 abstract class AbstractNamer implements NamerInterface
 {
     public function __construct(
@@ -13,6 +15,7 @@ abstract class AbstractNamer implements NamerInterface
     ) {
     }
 
+    #[Override]
     public function generate(string $filename, string $extension): string
     {
         return $this->strategy->generate($this->sanitize($filename, $extension), $extension);

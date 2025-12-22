@@ -23,32 +23,14 @@ use function in_array;
 
 class StorageService
 {
-    protected FilesystemOperator $filesystem;
-
-    protected NamerInterface $namer;
-
-    protected TranslatorInterface $translator;
-
-    protected MediaValidation $mediaValidation;
-
-    protected UrlRetrieverInterface $urlRetriever;
-
-    protected EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        MediaValidation $mediaValidation,
-        NamerInterface $namer,
-        FilesystemOperator $filesystem,
-        TranslatorInterface $translator,
-        UrlRetrieverInterface $urlRetriever,
-        EventDispatcherInterface $eventDispatcher,
+        protected readonly MediaValidation $mediaValidation,
+        protected readonly NamerInterface $namer,
+        protected readonly FilesystemOperator $filesystem,
+        protected readonly TranslatorInterface $translator,
+        protected readonly UrlRetrieverInterface $urlRetriever,
+        protected readonly EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->mediaValidation = $mediaValidation;
-        $this->namer = $namer;
-        $this->filesystem = $filesystem;
-        $this->translator = $translator;
-        $this->urlRetriever = $urlRetriever;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function save(UploadedFile $file, ?string $originalFilename = '', ?string $groupName = null): UploadFile

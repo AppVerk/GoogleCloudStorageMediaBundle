@@ -8,15 +8,17 @@ use Google\Cloud\Storage\Bucket;
 use Google\Cloud\Storage\StorageClient;
 use Google\Cloud\Storage\StorageObject;
 
+use Override;
+
 class GoogleObjectUrlRetriever implements UrlRetrieverInterface
 {
-    private string $bucketId;
-
     private StorageClient $client;
 
-    public function __construct(string $projectId, string $bucketId, string $keyFilePath)
-    {
-        $this->bucketId = $bucketId;
+    public function __construct(
+        string $projectId,
+        private readonly string $bucketId,
+        string $keyFilePath
+    ) {
         $this->client = new StorageClient(
             [
                 'projectId'   => $projectId,
@@ -40,6 +42,7 @@ class GoogleObjectUrlRetriever implements UrlRetrieverInterface
         return $storageObject->info();
     }
 
+    #[Override]
     public function getUrl(string $filename): string
     {
         $info = $this->getInfo($this->getObject($filename));

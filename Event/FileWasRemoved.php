@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace AppVerk\GoogleCloudStorageMediaBundle\Event;
 
-class FileWasRemoved
+readonly class FileWasRemoved
 {
-    private string $fileName;
-
-    public function __construct(string $fileName)
-    {
-        $this->fileName = $fileName;
+    public function __construct(
+        private string $fileName
+    ) {
     }
 
     public function getFileName(): string

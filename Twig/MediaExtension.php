@@ -8,6 +8,8 @@ use AppVerk\GoogleCloudStorageMediaBundle\Service\MediaProvider;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
+use Override;
+
 class MediaExtension extends AbstractExtension
 {
     public function __construct(
@@ -15,6 +17,7 @@ class MediaExtension extends AbstractExtension
     ) {
     }
 
+    #[Override]
     public function getFilters(): array
     {
         return [
